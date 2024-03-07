@@ -71,7 +71,7 @@ class _IntropageState extends State<Intropage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MyHomePage(title: "HOME PAGE"),
+                      builder: (context) => MyHomePage(),
                     ),
                   );
                 } else {
@@ -83,10 +83,10 @@ class _IntropageState extends State<Intropage> {
                   );
                 }
               },
+              
               child: Text("Next"),
               style: ElevatedButton.styleFrom(
-                primary: Color(0xFFea3c12),
-                onPrimary: Colors.white,
+                foregroundColor: Colors.white, backgroundColor: Color(0xFFea3c12),
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
               ),
             ),
