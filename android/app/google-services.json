@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "740472060904",
+    "project_id": "padika-5acd4",
+    "storage_bucket": "padika-5acd4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:740472060904:android:6c0c37c5c1d9129b58425d",
+        "android_client_info": {
+          "package_name": "com.example.padika"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcq19bXdHfFeGSiNUOExuGxBqBZyexo4E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

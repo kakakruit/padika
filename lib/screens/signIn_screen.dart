@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:padika/main.dart';
+import 'package:padika/screens/dashboard.dart';
 
-class Intropage extends StatefulWidget {
+class SignInScreen extends StatefulWidget {
   @override
-  _IntropageState createState() => _IntropageState();
+  _SignInScreenState createState() => _SignInScreenState();
 }
 
-class _IntropageState extends State<Intropage> {
+class _SignInScreenState extends State<SignInScreen> {
   String username = '';
   String password = '';
 
@@ -71,7 +72,7 @@ class _IntropageState extends State<Intropage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MyHomePage(),
+                      builder: (context) => Dashboard(),
                     ),
                   );
                 } else {
