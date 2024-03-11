@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../screens/product_upload_page.dart';
-import '../screens/SearchPage.dart'; // Assuming the search page file is named search_page.dart and located in the screens directory
+import '../screens/news_page.dart';
+import '../screens/SearchPage_ing.dart'; // Assuming the search page file is named search_page.dart and located in the screens directory
+import '../screens/news_page.dart'; // Assuming the news page file is named news_page.dart and located in the screens directory
 
 class BottomNavBar extends StatefulWidget {
   @override
@@ -14,12 +15,17 @@ class _BottomNavBarState extends State<BottomNavBar> {
     if (index == 1) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ProductUploadPage()),
+        MaterialPageRoute(builder: (context) => NewsPage()),
       );
     } else if (index == 0) { // Check if the search icon is tapped
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => SearchPage()), // Navigate to the SearchPage
+      );
+    } else if (index == 2) { // Check if the news icon is tapped
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => NewsPage()), // Navigate to the NewsPage
       );
     } else {
       setState(() {
@@ -27,6 +33,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       });
     }
   }
+
 
 
   @override
@@ -49,8 +56,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
             label: 'Search',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.post_add),
-            label: 'Post',
+            icon: Icon(Icons.article), // Changed icon to News icon
+            label: 'News', // Changed label to News
           ),
         ],
         selectedIconTheme: IconThemeData(color: Colors.red),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../widgets/Bottom_nav_bar.dart';
 import '../widgets/Side_menu_dash.dart';
+import '../widgets/search_pro.dart'; // Import the SearchPro widget
 
 class Dashboard extends StatelessWidget {
-  const Dashboard({super.key}) ;
+  const Dashboard({super.key}) ; // Correct the super constructor
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,6 @@ class Dashboard extends StatelessWidget {
         backgroundColor: Color(0xFFea3c12),
         title: Row(
           children: [
-            // Add the side menu bar to the app bar
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -31,7 +31,6 @@ class Dashboard extends StatelessWidget {
         ),
       ),
       drawer: Drawer(
-        // Add a drawer to the Scaffold
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
@@ -57,10 +56,8 @@ class Dashboard extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Text(
-          "HOME",
-          style: TextStyle(fontSize: 21),
-        ),
+        // Replace the Text widget with SearchPro widget
+        child: SearchPro(),
       ),
       bottomNavigationBar: BottomNavBar(),
     );

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:padika/screens/signIn_screen.dart';
+import 'package:padika/screens/auth_screen.dart';
 import 'package:padika/main.dart';
 
 class SplashScreen extends StatefulWidget {
