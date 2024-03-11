@@ -5,7 +5,7 @@ import 'package:padika/screens/signIn_screen.dart';
 import 'package:padika/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-Future<void> main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home:  SplashScreen(), // Display SplashScreen initially
+      home: SplashScreen(), // Display SplashScreen initially
     );
   }
 }
