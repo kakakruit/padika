@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Container(
           color: Color(0xFFea3c12), // Use hexadecimal color code #960018
           child: Image.asset(
-            'assets/splash.png', // Path to your custom splash screen image
+            'assets/images/splash.png', // Path to your custom splash screen image
             width: double.maxFinite,
             height: double.maxFinite,
           ),
