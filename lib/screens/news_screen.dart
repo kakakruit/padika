@@ -5,7 +5,7 @@ class NewsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Latest Food News'),
+        title: Text('NEWS'),
       ),
       body: SingleChildScrollView(
         child: Column(

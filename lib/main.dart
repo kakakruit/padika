@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:padika/firebase_options.dart';
 import 'package:padika/screens/dashboard.dart';
+import 'package:padika/screens/news_screen.dart';
 import 'package:padika/screens/signup_screen.dart';
 import 'package:padika/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';

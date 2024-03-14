@@ -13,7 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(
-      Duration(seconds: 2), // Change the duration as per your requirement
+      Duration(seconds: 1), // Change the duration as per your requirement
           () {
         Navigator.pushReplacement(
           context,

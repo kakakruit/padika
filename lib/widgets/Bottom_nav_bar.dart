@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../screens/news_page.dart';
+import '../screens/news_screen.dart';
 import '../screens/SearchPage_ing.dart'; // Assuming the search page file is named search_page.dart and located in the screens directory
-import '../screens/news_page.dart'; // Assuming the news page file is named news_page.dart and located in the screens directory
+import '../screens/news_screen.dart'; // Assuming the news page file is named news_screen.dart and located in the screens directory
 
 class BottomNavBar extends StatefulWidget {
   @override
