@@ -1,7 +1,7 @@
-import 'package:expense_tracker/screens/dashboard.dart';
-import 'package:expense_tracker/services/db.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:padika/screens/dashboard.dart';
+import 'package:padika/services/db.dart';
 
 class AuthService {
   var db = Db();
