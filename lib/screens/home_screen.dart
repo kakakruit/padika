@@ -1,10 +1,15 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:padika/screens/drawer_screen.dart';
+import 'package:padika/screens/news_screen.dart';
 import 'package:padika/screens/signup_screen.dart';
 import 'package:padika/services/product.dart';
 import 'dart:convert';
+
+import 'package:padika/widgets/barcode_scanner.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -36,6 +41,44 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<List<Product>> fetchBarcode(String barcode) async {
+    try {
+      print("inside try");
+      final response = await http.get(
+          Uri.parse('http://172.17.25.66:3000/api/search/barcode/$barcode'));
+      print('Scanned data response: $response');
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as List<dynamic>;
+        print('Scanned data data: $data');
+        return data.map((item) => Product.fromJson(item)).toList();
+      } else {
+        // Handle API errors (e.g., non-200 status code)
+        throw Exception('API error: ${response.statusCode}');
+      }
+    } catch (error) {
+      // Handle connection timeout or other exceptions
+      throw Exception('Failed to load products: $error');
+    }
+  }
+
+  void handleScan(String scannedData) async {
+    print('Scanned data: $scannedData');
+    final products =
+    await fetchBarcode(scannedData); // Call fetchBarcode with scanned data
+    if (products.isNotEmpty) {
+      setState(() {
+        jsonData = products; // Update jsonData with fetched products
+      });
+    } else {
+      // Handle case where no product is found for the barcode
+      print("No product found for barcode: $scannedData");
+    }
+
+    // You can handle the scanned data here (e.g., search for a product, etc.)
+    // For now, let's just print it.
+  }
+
   logOut() async {
     setState(() {
       isLogoutLoading = true;
@@ -52,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF0D7207),
+        backgroundColor: Color(0xFFacc4ac),
         title: Row(
           children: [
             Expanded(
@@ -96,7 +139,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   print(error);
                 });
               },
-
+              decoration: InputDecoration(
+                  labelText: 'Search',
+                  border: OutlineInputBorder(),
+                  suffixIcon: BarcodeScanner(
+                    onScan: handleScan,
+                  )),
             ),
           ),
           Expanded(
