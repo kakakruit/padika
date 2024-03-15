@@ -65,7 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void handleScan(String scannedData) async {
     print('Scanned data: $scannedData');
     final products =
-    await fetchBarcode(scannedData); // Call fetchBarcode with scanned data
+        await fetchBarcode(scannedData); // Call fetchBarcode with scanned data
+
     if (products.isNotEmpty) {
       setState(() {
         jsonData = products; // Update jsonData with fetched products
