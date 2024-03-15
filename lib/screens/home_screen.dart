@@ -20,14 +20,19 @@ class _HomeScreenState extends State<HomeScreen> {
   String searchText = '';
 
   Future<List<Product>> fetchProducts() async {
-    final response = await http
-        .get(Uri.parse('http://172.17.25.66:3000/api/search/products/o'));
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body) as List<dynamic>;
-      return data.map((item) => Product.fromJson(item)).toList();
-    } else {
-      // Handle API error
-      throw Exception('Failed to load products');
+    try {
+      final response = await http.get(Uri.parse(
+          'http://172.17.25.66:3000/api/search/products/$searchText'));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as List<dynamic>;
+        return data.map((item) => Product.fromJson(item)).toList();
+      } else {
+        // Handle API errors (e.g., non-200 status code)
+        throw Exception('API error: ${response.statusCode}');
+      }
+    } catch (error) {
+      // Handle connection timeout or other exceptions
+      throw Exception('Failed to load products: $error');
     }
   }
 
@@ -41,13 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isLogoutLoading = false;
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // Fetch products on initial load
-    fetchProducts().then((data) => setState(() => jsonData = data));
   }
 
   @override
@@ -90,6 +88,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 setState(() {
                   searchText = value;
                 });
+                fetchProducts().then((products) {
+                  setState(() {
+                    jsonData = products;
+                  });
+                }).catchError((error) {
+                  print(error);
+                });
               },
               decoration: InputDecoration(
                 labelText: 'Search',
@@ -117,6 +122,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         .toList()[index];
                 return ListTile(
                   title: Text(product.productName!),
+                  onTap: () => {
+                    print(product.productId),
+                  },
                   // Add other product details as needed (e.g., barcode)
                 );
               },
