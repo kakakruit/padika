@@ -66,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
     print('Scanned data: $scannedData');
     final products =
         await fetchBarcode(scannedData); // Call fetchBarcode with scanned data
+
     if (products.isNotEmpty) {
       setState(() {
         jsonData = products; // Update jsonData with fetched products
@@ -152,19 +153,19 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: searchText.isEmpty
                   ? jsonData.length
                   : jsonData
-                      .where((product) => product.productName!
-                          .toLowerCase()
-                          .contains(searchText.toLowerCase()))
-                      .toList()
-                      .length,
+                  .where((product) => product.productName!
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()))
+                  .toList()
+                  .length,
               itemBuilder: (context, index) {
                 final product = searchText.isEmpty
                     ? jsonData[index]
                     : jsonData
-                        .where((product) => product.productName!
-                            .toLowerCase()
-                            .contains(searchText.toLowerCase()))
-                        .toList()[index];
+                    .where((product) => product.productName!
+                    .toLowerCase()
+                    .contains(searchText.toLowerCase()))
+                    .toList()[index];
                 return ListTile(
                   title: Text(product.productName!),
                   onTap: () => {
