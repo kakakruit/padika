@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:padika/screens/drawer_screen.dart';
+import 'package:padika/screens/hero_card.dart';
 import 'package:padika/screens/news_screen.dart';
 import 'package:padika/screens/signup_screen.dart';
 import 'package:padika/services/product.dart';
@@ -23,6 +24,15 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isSearchFocused = false;
   List<Product> jsonData = [];
   String searchText = '';
+
+  navigateToProductDetails(String productId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HeroCard(productId: productId.toString()),
+      ),
+    );
+  }
 
   Future<List<Product>> fetchProducts() async {
     try {
@@ -153,23 +163,23 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: searchText.isEmpty
                   ? jsonData.length
                   : jsonData
-                  .where((product) => product.productName!
-                  .toLowerCase()
-                  .contains(searchText.toLowerCase()))
-                  .toList()
-                  .length,
+                      .where((product) => product.productName!
+                          .toLowerCase()
+                          .contains(searchText.toLowerCase()))
+                      .toList()
+                      .length,
               itemBuilder: (context, index) {
                 final product = searchText.isEmpty
                     ? jsonData[index]
                     : jsonData
-                    .where((product) => product.productName!
-                    .toLowerCase()
-                    .contains(searchText.toLowerCase()))
-                    .toList()[index];
+                        .where((product) => product.productName!
+                            .toLowerCase()
+                            .contains(searchText.toLowerCase()))
+                        .toList()[index];
                 return ListTile(
                   title: Text(product.productName!),
                   onTap: () => {
-                    print(product.productId),
+                    navigateToProductDetails(product.productId.toString()),
                   },
                   // Add other product details as needed (e.g., barcode)
                 );
