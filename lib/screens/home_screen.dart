@@ -96,11 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   print(error);
                 });
               },
-              decoration: InputDecoration(
-                labelText: 'Enter Product Name',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.search), // Added prefixIcon
-              ),
+
             ),
           ),
           Expanded(
