@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         title: Text(
           "LOG-IN",
-          style: TextStyle(color: Colors.white,fontSize: 30),
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: Color(0xFF0D7207),
