@@ -117,38 +117,6 @@ class _SignInScreenState extends State<SignInScreen> {
                               fontSize: 25),
                         ),
                       ),
-                      Center(
-                        child: Text(
-                          "OR",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 23,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Dashboard(),
-                            ),
-                          );
-                        },
-                        icon: Image.asset(
-                          'assets/images/google.jpg',
-                          height: 70,
-                          width: 140,
-                        ),
-                        label: SizedBox.shrink(), // Remove label text
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
