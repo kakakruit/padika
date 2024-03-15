@@ -43,69 +43,82 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Log-In",
-          style: TextStyle(color: Colors.white),
+          "LOG-IN",
+          style: TextStyle(color: Colors.white,fontSize: 30),
         ),
         centerTitle: true,
         backgroundColor: Color(0xFF0D7207),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(labelText: "Email"),
-                    style: TextStyle(color: Colors.black),
-                    keyboardType: TextInputType.emailAddress,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
+      body: Stack(
+        children: [
+            Container(
+              width: 400,
+              height: 300,// Set your desired height here
+              child: Image.asset(
+                'assets/images/log_in_bg.png',
+
+              ),
+            ),
+
+          Padding(
+            padding: const EdgeInsets.only(top: 200.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: _emailController,
+                        decoration: InputDecoration(labelText: "Email"),
+                        style: TextStyle(color: Colors.black),
+                        keyboardType: TextInputType.emailAddress,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _passwordController,
+                        decoration: InputDecoration(labelText: "Password"),
+                        style: TextStyle(color: Colors.black),
+                        keyboardType: TextInputType.visiblePassword,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        obscureText: true,
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 10),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(labelText: "Password"),
-                    style: TextStyle(color: Colors.black),
-                    keyboardType: TextInputType.visiblePassword,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    obscureText: true,
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    _submitForm();
+                  },
+                  child: isLoader
+                      ? const Center(child: CircularProgressIndicator())
+                      : const Text(
+                    'Login',
+                    style: TextStyle(color: Color(0xFF0D7207), fontSize: 25),
                   ),
-                ],
-              ),
+                ),
+                SizedBox(height: 10),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignInScreen()),
+                    );
+                  },
+                  child: const Text(
+                    'Create',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 241, 89, 0), fontSize: 25),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _submitForm();
-              },
-              child: isLoader
-                  ? const Center(child: CircularProgressIndicator())
-                  : const Text(
-                'Login',
-                style: TextStyle(color: Color(0xFF0D7207), fontSize: 25),
-              ),
-            ),
-            SizedBox(height: 10),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignInScreen()),
-                );
-              },
-              child: const Text(
-                'Create',
-                style: TextStyle(
-                    color: Color.fromARGB(255, 241, 89, 0), fontSize: 25),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
