@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -39,11 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<List<Product>> fetchBarcode() async {
+  Future<List<Product>> fetchBarcode(String barcode) async {
     try {
       print("inside try");
-      final response = await http.get(Uri.parse(
-          'http://172.17.25.66:3000/api/search/barcode/8901063029255'));
+      final response = await http.get(
+          Uri.parse('http://172.17.25.66:3000/api/search/barcode/$barcode'));
       print('Scanned data response: $response');
 
       if (response.statusCode == 200) {
@@ -60,17 +62,18 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void handleScan(String scannedData) async{
+  void handleScan(String scannedData) async {
     print('Scanned data: $scannedData');
-    final products = await fetchBarcode(); // Call fetchBarcode with scanned data
-   if (products.isNotEmpty) {
-    setState(() {
-      jsonData = products; // Update jsonData with fetched products
-    });
-  } else {
-    // Handle case where no product is found for the barcode
-    print("No product found for barcode: $scannedData");
-  }
+    final products =
+        await fetchBarcode(scannedData); // Call fetchBarcode with scanned data
+    if (products.isNotEmpty) {
+      setState(() {
+        jsonData = products; // Update jsonData with fetched products
+      });
+    } else {
+      // Handle case where no product is found for the barcode
+      print("No product found for barcode: $scannedData");
+    }
 
     // You can handle the scanned data here (e.g., search for a product, etc.)
     // For now, let's just print it.
