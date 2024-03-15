@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import '../widgets/Bottom_nav_bar.dart'; // Import the BottomNavBar widget
+import '../widgets/navBar.dart'; // Import the BottomNavBar widget
 
 class SearchPage extends StatefulWidget {
   @override
@@ -79,7 +79,8 @@ class _SearchPageState extends State<SearchPage> {
                       },
                       decoration: InputDecoration(
                         hintText: 'Enter Ingredient Name',
-                        hintStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                        hintStyle: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
                         border: InputBorder.none,
                       ),
                     ),
@@ -99,7 +100,6 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavBar(), // Add the BottomNavBar widget here
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class NewsPage extends StatelessWidget {
+class NewsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
