@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFacc4ac),
+        backgroundColor: Color(0xFF0D7207),
         title: Row(
           children: [
             Expanded(
@@ -97,8 +97,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 });
               },
               decoration: InputDecoration(
-                labelText: 'Search',
+                labelText: 'Enter Product Name',
                 border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.search), // Added prefixIcon
               ),
             ),
           ),
@@ -107,19 +108,19 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: searchText.isEmpty
                   ? jsonData.length
                   : jsonData
-                      .where((product) => product.productName!
-                          .toLowerCase()
-                          .contains(searchText.toLowerCase()))
-                      .toList()
-                      .length,
+                  .where((product) => product.productName!
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()))
+                  .toList()
+                  .length,
               itemBuilder: (context, index) {
                 final product = searchText.isEmpty
                     ? jsonData[index]
                     : jsonData
-                        .where((product) => product.productName!
-                            .toLowerCase()
-                            .contains(searchText.toLowerCase()))
-                        .toList()[index];
+                    .where((product) => product.productName!
+                    .toLowerCase()
+                    .contains(searchText.toLowerCase()))
+                    .toList()[index];
                 return ListTile(
                   title: Text(product.productName!),
                   onTap: () => {

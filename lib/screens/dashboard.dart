@@ -13,7 +13,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   var isLogoutLoading = false;
   int currentIndex = 0;
-  var pageViewList = [NewsScreen(), HomeScreen()];
+  var pageViewList = [HomeScreen(),NewsScreen()];
 
   @override
   Widget build(BuildContext context) {

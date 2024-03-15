@@ -6,7 +6,7 @@ class NewsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('NEWS'),
-        backgroundColor: Color(0xFFacc4ac),
+        backgroundColor: Color(0xFF0D7207),
       ),
       body: SingleChildScrollView(
         child: Column(

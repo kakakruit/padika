@@ -57,7 +57,7 @@ class DrawerScreen extends StatelessWidget {
         children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Color(0xFFacc4ac),
+              color: Color(0xFF0D7207),
             ),
             child: Text(
               'Menu',
@@ -69,10 +69,10 @@ class DrawerScreen extends StatelessWidget {
           ),
           ListTile(
             title: Text(
-              'Developers',
+              'About Developers:',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: 15,
               ),
             ),
           ),
@@ -86,12 +86,8 @@ class DrawerScreen extends StatelessWidget {
               onTap: () {
                 // Do something when the developer is tapped
               },
-            ),
-          ListTile(
-            title: Center(child: Text('Logout')),
-            onTap: () {
-              logOut;
-            },
+
+
           ),
         ],
       ),
