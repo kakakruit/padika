@@ -1,0 +1,54 @@
+
+CREATE TABLE  ingredient_name(
+	ingredient_name_id SERIAL PRIMARY KEY,
+	ingredient_name CHARACTER VARYING (10000)
+		CONSTRAINT ingredient_name_unique UNIQUE
+);
+
+CREATE TABLE  data_source(
+	source_id SERIAL PRIMARY KEY,
+	source_name CHARACTER varying (1000)
+		constraint source_name_unique UNIQUE
+);
+
+create table ingredient_description(
+	description_id serial primary key,
+	description character varying(100000),
+	source_id integer not null,
+	foreign key (source_id) references data_source (source_id) ON UPDATE CASCADE ON DELETE cascade
+--	CONSTRAINT ingredient_description_unique unique(source_id, description)
+);
+
+
+create table ingredient_description_mapping(
+	ingredient_mapping_id serial primary key,
+	ingredient_name_id integer not null,
+	foreign key (ingredient_name_id) references ingredient_name (ingredient_name_id) ON UPDATE CASCADE ON DELETE cascade,
+	description_id integer not null,
+	foreign key (description_id) references ingredient_description (description_id) ON UPDATE CASCADE ON DELETE CASCADE	,
+	source_pk integer,
+	source_id integer not null,
+	foreign key (source_id) references data_source (source_id) ON UPDATE CASCADE ON DELETE cascade,
+	CONSTRAINT ingredient_description_mapping_unique unique(ingredient_name_id, description_id, source_id)
+);
+
+create table product(
+	product_id serial primary key,
+	barcode bigint,
+	product_name CHARACTER VARYING (1000),
+	source_id integer not null,
+	foreign key (source_id) references data_source (source_id) ON UPDATE CASCADE ON DELETE cascade,
+	CONSTRAINT product_name_unique unique(barcode, product_name)
+	-- no need to add constraint on source_id as its just for tracking in this table.
+);
+
+create table ingredients_list(
+	ingredients_list_id serial primary key,
+	product_id integer not null,
+	foreign key (product_id) references product (product_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	ingredient_name_id integer not null,
+	foreign key (ingredient_name_id) references ingredient_name (ingredient_name_id) ON UPDATE CASCADE ON DELETE cascade,
+	source_id integer not null,
+	foreign key (source_id) references data_source (source_id) ON UPDATE CASCADE ON DELETE cascade,
+	constraint ingredients_list_unique unique(product_id, ingredient_name_id, source_id)
+);

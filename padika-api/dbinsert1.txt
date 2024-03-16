@@ -1,0 +1,38 @@
+INSERT INTO data_source (source_name) VALUES 
+('auto'),
+('Open Food Facts'),
+('FSSAI'),
+('FoodData Central'),
+('foodb');
+
+INSERT INTO ingredient_name (ingredient_name) VALUES 
+('Maltose'),
+('Maltodextrin'),
+('D-Glucose'),
+('Dextrose');
+INSERT INTO ingredient_name (ingredient_name) VALUES 
+('Artificial Sweeteners')
+
+insert into ingredient_description (source_id,description) values
+(5,'Sweetening agent, dietary supplement. Occurs in some plants as hydrolytic dec. production of starch. Production in high yield (80%) by the action of diastase (a- and b-amylase) on starch, a process used in brewing\r\n\r\nMaltose is a disaccharide formed from two units of glucose joined with an alpha(1-\u003e4)bond. Maltose is the disaccharide produced when amylase breaks down starch. It is found in germinating seeds such as barley as they break down their starch stores to use for food. It is also produced when glucose is caramelized.'),
+(5,'Nonsweet nutritive food additive used as a reduced calorie fat replacementand is) also used as a stabiliser, thickener and encapsulating agent in food products\r\n\r\nMaltodextrin is a polysaccharide that is used as a food additive. It is hydrolysate produced from starch and is usually found as a creamy-white hygroscopic spraydried powder. Maltodextrin is easily digestible, being absorbed as rapidly as glucose, and might be either moderately sweet or almost flavorless. Maltodextrin is found in many foods, some of which are yellow pond-lily, pecan nut, tea, and celery leaves.'),
+(5,'Occurs free in fruits, honey and plant juices. Major component of many oligosaccharides and polysaccharides. Occurs in sucrose combined with fructose. Comly. available by the acid hydrol. of potato starch (Europe) and cornstarch (USA). Food additive: nutritive sweetener, humectant. D-Glucose is found in many foods, some of which are wheat bread, sour cherry, toffee, and other soy product.');
+
+insert into ingredient_description_mapping (source_id,ingredient_name_id,description_id) values
+(5,1,1),
+(5,2,2),
+(5,3,3),
+(5,4,3);
+
+insert into product (source_id, barcode, product_name) values
+(1, 1122334455, 'JimJam, 10g'),
+(5, 4455667788, 'Oreo, 10g');
+
+insert into ingredients_list (source_id, product_id, ingredient_name_id) values
+(1, 1, 1),
+(1, 1, 2),
+(1, 1, 4),
+(1, 2, 1),
+(1, 2, 3);
+insert into ingredients_list (source_id, product_id, ingredient_name_id) values
+(1, 2, 5);
