@@ -5,6 +5,8 @@ INSERT INTO data_source (source_name) VALUES
 ('FoodData Central'),
 ('foodb');
 
+-- the rest of the script is for inserting dummy data and is optional if you are loading external data
+
 INSERT INTO ingredient_name (ingredient_name) VALUES 
 ('Maltose'),
 ('Maltodextrin'),
