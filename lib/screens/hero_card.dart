@@ -1,12 +1,21 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:padika/services/product.dart';
 
 class HeroCard extends StatefulWidget {
-  const HeroCard({
+  HeroCard({
     Key? key,
     required this.productId,
+    required this.productName,
   }) : super(key: key);
 
   final String productId;
+  final String productName; // Add product name parameter
+  // Add product name parameter
 
   @override
   _HeroCardState createState() => _HeroCardState();
@@ -14,8 +23,100 @@ class HeroCard extends StatefulWidget {
 
 class _HeroCardState extends State<HeroCard> {
   final TextEditingController _commentController = TextEditingController();
-  final List<String> _comments = [];
+  List<String> _comments = [];
   bool _showComments = false;
+  List<Map<String, dynamic>> _ingredients = [];
+  late List<Product> product;
+
+  Future<List<Map<String, dynamic>>> fetchIngredients() async {
+    final response = await http.get(Uri.parse(
+        'http://172.17.25.66:3000/api/search/ingredients_list/${widget.productId}'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      print(data);
+      // Map each item in the list to a Map<String, dynamic>
+      return data.map((item) => item as Map<String, dynamic>).toList();
+    } else {
+      throw Exception('Failed to load ingredients');
+    }
+  }
+
+  Future<List<Product>> fetchBarcode(String barcode) async {
+    try {
+      print("inside try");
+      final response = await http.get(
+          Uri.parse('http://172.17.25.66:3000/api/search/barcode/$barcode'));
+      print('Scanned data response: $response');
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as List<dynamic>;
+        print('Scanned data data: $data');
+        return data.map((item) => Product.fromJson(item)).toList();
+      } else {
+        // Handle API errors (e.g., non-200 status code)
+        throw Exception('API error: ${response.statusCode}');
+      }
+    } catch (error) {
+      // Handle connection timeout or other exceptions
+      throw Exception('Failed to load products: $error');
+    }
+  }
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchBarcode(widget.productId).then((products) {
+      setState(() {
+        product = products;
+      });
+    }).catchError((error) {
+      print('Error fetching product: $error');
+    });
+    // Fetch ingredients when the widget initializes
+    fetchIngredients().then((ingredients) {
+      setState(() {
+        _ingredients = ingredients;
+      });
+    }).catchError((error) {
+      print('Error fetching ingredients: $error');
+    });
+    Firebase.initializeApp().then((value) {
+      _fetchComments();
+    });
+  }
+
+  void _postComment(String comment) {
+    if (comment.isNotEmpty) {
+      _firestore.collection('comments').add({
+        'commentText': comment,
+        'productId': widget.productId,
+        // Optionally add timestamps or user information
+      }).then((value) {
+        setState(() {
+          _comments.insert(0, comment);
+          _commentController.clear();
+        });
+      });
+    }
+  }
+
+  void _fetchComments() {
+    _firestore
+        .collection('comments')
+        .where('productId', isEqualTo: widget.productId)
+        .orderBy('timestamp',
+            descending: true) // Assuming a timestamp field for ordering
+        .snapshots()
+        .listen((snapshot) {
+      setState(() {
+        _comments = snapshot.docs
+            .map((doc) => doc.get('commentText') as String)
+            .toList();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +133,11 @@ class _HeroCardState extends State<HeroCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: MediaQuery.of(context).padding.top), // Add padding to accommodate the AppBar
+            SizedBox(
+              height: MediaQuery.of(context)
+                  .padding
+                  .top, // Add padding to accommodate the AppBar
+            ),
             Container(
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -44,19 +149,24 @@ class _HeroCardState extends State<HeroCard> {
                   CircleAvatar(
                     backgroundColor: Colors.white,
                     child: Text(
-                      widget.productId.length >= 2 ? widget.productId.substring(0, 2) : 'NV', // Display first two characters of the product ID if it has at least 2 characters
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF0D7207)),
+                      widget.productId.length >= 2
+                          ? widget.productId.substring(0, 2)
+                          : 'NV',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF0D7207),
+                      ),
                     ),
                   ),
                   SizedBox(width: 10),
                   Text(
-                    widget.productId,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  Spacer(),
-                  Text(
-                    'Barcode: 123456789',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                    widget.productName!,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),
@@ -65,9 +175,24 @@ class _HeroCardState extends State<HeroCard> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'Dummy Product',
+                'Ingredients',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
+            ),
+            SizedBox(height: 20),
+            // Ingredients List
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: _ingredients.length,
+              itemBuilder: (context, index) {
+                final ingredient = _ingredients[index];
+                return ListTile(
+                  title: Text(ingredient['ingredient_name'] ?? 'Unknown'),
+                  subtitle: Text(ingredient['description'] ?? 'No description'),
+                  // You can add more information about the ingredient here
+                );
+              },
             ),
             SizedBox(height: 20),
             // Comment Field
@@ -94,7 +219,8 @@ class _HeroCardState extends State<HeroCard> {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF0D7207), // Button color
-                      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                       foregroundColor: Colors.white,
                     ),
                     child: Text('Post', style: TextStyle(fontSize: 16)),
@@ -104,7 +230,7 @@ class _HeroCardState extends State<HeroCard> {
             ),
             // Comments Button
             Center(
-              child: ElevatedButton (
+              child: ElevatedButton(
                 onPressed: () {
                   setState(() {
                     _showComments = !_showComments;
@@ -142,28 +268,9 @@ class _HeroCardState extends State<HeroCard> {
     );
   }
 
-  void _postComment(String comment) {
-    if (comment.isNotEmpty) {
-      setState(() {
-        _comments.insert(0, comment); // Add new comment to the beginning of the list
-        _commentController.clear();
-      });
-    }
-  }
-
   @override
   void dispose() {
     _commentController.dispose();
     super.dispose();
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: Scaffold(
-      body: Center(
-        child: HeroCard(productId: '1234567890'),
-      ),
-    ),
-  ));
 }

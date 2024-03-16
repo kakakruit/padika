@@ -1,5 +1,4 @@
 import 'dart:ffi';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -9,7 +8,6 @@ import 'package:padika/screens/news_screen.dart';
 import 'package:padika/screens/signup_screen.dart';
 import 'package:padika/services/product.dart';
 import 'dart:convert';
-
 import 'package:padika/widgets/barcode_scanner.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,11 +23,15 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Product> jsonData = [];
   String searchText = '';
 
-  navigateToProductDetails(String productId) {
+  navigateToProductDetails(String productId, List product, int index) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => HeroCard(productId: productId.toString()),
+        builder: (context) => HeroCard(
+          productId: productId,
+          productName: product[index]
+              .productName, // Access product name from product list
+        ),
       ),
     );
   }
@@ -79,7 +81,36 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (products.isNotEmpty) {
       setState(() {
-        jsonData = products; // Update jsonData with fetched products
+        jsonData = products;
+        Expanded(
+          child: ListView.builder(
+            itemCount: searchText.isEmpty
+                ? jsonData.length
+                : jsonData
+                    .where((product) => product.productName!
+                        .toLowerCase()
+                        .contains(searchText.toLowerCase()))
+                    .toList()
+                    .length,
+            itemBuilder: (context, index) {
+              final product = searchText.isEmpty
+                  ? jsonData[index]
+                  : jsonData
+                      .where((product) => product.productName!
+                          .toLowerCase()
+                          .contains(searchText.toLowerCase()))
+                      .toList()[index];
+              return ListTile(
+                title: Text(product.productName!),
+                onTap: () => {
+                  navigateToProductDetails(
+                      product.productId.toString(), jsonData, index),
+                },
+                // Add other product details as needed (e.g., barcode)
+              );
+            },
+          ),
+        ); // Update jsonData with fetched products
       });
     } else {
       // Handle case where no product is found for the barcode
@@ -179,7 +210,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 return ListTile(
                   title: Text(product.productName!),
                   onTap: () => {
-                    navigateToProductDetails(product.productId.toString()),
+                    navigateToProductDetails(
+                        product.productId.toString(), jsonData, index),
                   },
                   // Add other product details as needed (e.g., barcode)
                 );
