@@ -1,6 +1,6 @@
 const fs = require("fs");
 const readline = require("readline");
-const { insert_product_ingredients } = require("./mappers");
+const { insert_product_ingredients } = require("./helper");
 
 async function processLine(line) {
   const fields = line.split("\t"); // Assuming tab-separated values, adjust if needed
@@ -8,15 +8,11 @@ async function processLine(line) {
   const productName = fields[8];
   var ingredientsText = fields[39];
   if (code && productName && ingredientsText && code != "code") {
-    console.log("Code:", code);
-    console.log("Product Name:", productName);
-    // console.log("Ingredients Text:", ingredientsText);
-    console.log("---------------------------------------------");
+    console.log(code, productName);
     if (ingredientsText[ingredientsText.length - 1] == ".")
       ingredientsText = ingredientsText.slice(0, -1);
     var ingredients = ingredientsText.split(/\s*,\s*(?![^()]*\))/);
     await insert_product_ingredients(productName, code, 2, ingredients);
-    // console.log("---------------------------------------------");
   }
 }
 
