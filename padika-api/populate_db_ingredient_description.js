@@ -1,6 +1,6 @@
 const fs = require("fs");
 const db = require("./db");
-const { insert_ingredient_description_mapping } = require("./mappers");
+const { insert_ingredient_description_mapping } = require("./helper");
 
 var path =
   "./Food_Database/foodb_2020_04_07_json/foodb_2020_04_07_json/Compound.json";
@@ -12,17 +12,19 @@ try {
   async function iterateArray() {
     for (var item of jsonObjects) {
       let jsonObject = JSON.parse(item);
-      await insert_ingredient_description_mapping(
-        5,
-        jsonObject.id,
-        jsonObject.name,
-        jsonObject.description
-      ).then((e) => console.log("Mapping id:", e));
+      if (jsonObject.id && jsonObject.name && jsonObject.description) {
+        await insert_ingredient_description_mapping(
+          5,
+          jsonObject.id,
+          jsonObject.name,
+          jsonObject.description
+        ).then((e) => console.log("Mapping id:", e));
+      }
     }
   }
   iterateArray()
     .then(() => {
-      console.log("Done");
+      console.log("Done!");
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -30,5 +32,5 @@ try {
 } catch (error) {
   console.error("Error reading the file:", error);
 } finally {
-  console.log("Finished!");
+  console.log("Finished Quering. please wait");
 }
