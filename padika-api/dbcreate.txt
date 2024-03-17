@@ -34,13 +34,14 @@ create table ingredient_description_mapping(
 
 create table product(
 	product_id serial primary key,
-	barcode bigint,
+	barcode DECIMAL(100,0),
 	product_name CHARACTER VARYING (1000),
 	source_id integer not null,
 	foreign key (source_id) references data_source (source_id) ON UPDATE CASCADE ON DELETE cascade,
 	CONSTRAINT product_name_unique unique(barcode, product_name)
 	-- no need to add constraint on source_id as its just for tracking in this table.
 );
+
 
 create table ingredients_list(
 	ingredients_list_id serial primary key,
